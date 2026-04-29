@@ -100,7 +100,13 @@ elif menu == "Liquidaciones":
     
     if not df_t.empty:
         busc = st.text_input("🔍 Buscar trabajador por RUT o Nombre")
-        df_f = df_t[df_t['rut'].str.contains(busc) | df_t['nombre'].str.contains(busc, case=False)]
+        if busc:
+    df_f = df_t[
+        df_t['rut'].astype(str).str.contains(busc, na=False) |
+        df_t['nombre'].astype(str).str.contains(busc, case=False, na=False)
+    ]
+else:
+    df_f = df_t
         
         if not df_f.empty:
             sel_r = st.selectbox("Seleccione el RUT:", df_f['rut'])
